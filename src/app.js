@@ -19,7 +19,7 @@ app.use(express.json());
 
 
 app.use('/uploads', (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5500');
+  res.header('Access-Control-Allow-Origin', 'https://padel-social-frontend.onrender.com');
   res.header('Access-Control-Allow-Methods', 'GET');
   next();
 }, express.static(path.join(__dirname, '../uploads')));
