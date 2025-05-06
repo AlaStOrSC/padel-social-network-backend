@@ -1,0 +1,482 @@
+/* Estilos Generales */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+.match-planner {
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.match-planner__title h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #05374d;
+}
+
+.match-planner__form {
+  margin-top: 4rem;
+}
+
+.match-planner__form label {
+  display: block;
+  margin: 0.75rem 0 0.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.match-planner__form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+}
+
+.match-planner__submit-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #4657f3;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.match-planner__submit-button:hover {
+  background-color: #182174;
+}
+
+.match-cards {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.match-cards__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.match-card {
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.match-card--won {
+  background-color: rgba(40, 167, 69, 0.2);
+}
+
+.match-card--lost {
+  background-color: rgba(220, 53, 69, 0.2);
+}
+
+.match-card--draw {
+  background-color: rgba(0, 0, 255, 0.1);
+}
+
+.match-card__title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #05374d;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.match-card__info {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.match-card__status {
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+.match-card__status--pending {
+  color: #ffc107;
+}
+
+.match-card__status--finished {
+  color: #28a745;
+}
+
+.match-card__result-form {
+  display: none; 
+}
+
+.match-card__result-form.active {
+  display: block; 
+}
+
+.match-card__result {
+  margin-top: 1rem;
+}
+
+.match-card__result-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.match-card__result-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.match-card__set-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.match-card__result-input-left,
+.match-card__result-input-right {
+  width: 50px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.match-card__result-separator {
+  margin: 0 0.5rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.match-card__style {
+  margin-top: 1rem;
+}
+
+.match-card__style-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-top: 0.5rem;
+}
+
+.match-card__comments {
+  margin-top: 1rem;
+}
+
+.match-card__comment-input {
+  width: 100%;
+  max-width: 400px;
+  height: 100px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 14px;
+  resize: none;
+  margin-bottom: 1rem;
+}
+
+.match-card__save-comment {
+  padding: 0.5rem 1rem;
+  background-color: #4657f3;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 1rem;
+}
+
+.match-card__save-comment:hover {
+  background-color: #182174;
+}
+
+.match-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.552rem;
+  margin-top: 3rem;
+}
+
+.match-card__edit-button {
+  position: absolute;
+  bottom: 4rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #4657f3;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.match-card__edit-button:hover {
+  background-color: #182174;
+}
+
+.match-card__delete-button {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #d81111;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.match-card__delete-button:hover {
+  background-color: #410b0b;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  width: 90%;
+  margin: 0 auto;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  color: #05374d;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.modal-text {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.modal-close-button {
+  padding: 0.5rem 1rem;
+  background-color: #4657f3;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: block;
+  margin: 0 auto;
+}
+
+.modal-close-button:hover {
+  background-color: #182174;
+}
+
+/* Filtros Avanzados */
+.match-planner__filters {
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 600px; 
+}
+
+.match-planner__filters h3 {
+  font-size: 1.5rem;
+  color: #05374d;
+  margin-bottom: 4rem;
+}
+
+.filter-group {
+  margin-bottom: 1rem;
+}
+
+.filter-group label {
+  display: block;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.filter-group input,
+.filter-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  font-size: 1rem;
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.filter-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.filter-button--apply {
+  background-color: #4657f3;
+  color: #fff;
+}
+
+.filter-button--apply:hover {
+  background-color: #182174;
+}
+
+.filter-button--clear {
+  background-color: #4657f3;
+  color: #fff;
+}
+
+.filter-button--clear:hover {
+  background-color: #182174;
+}
+
+.match-card__icons {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+.tutorial-button,
+.close-tutorial-button {
+  background-color: #05374d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 10px;
+  margin-left: 48%;
+}
+
+.close-tutorial-button {
+  margin-left: 45%;
+}
+
+.tutorial-button:hover,
+.close-tutorial-button:hover {
+  background-color: #02415c;
+}
+
+.auth-actions {
+  text-align: right;
+  margin: 1rem 0;
+}
+
+.logout-button {
+  background-color: #ecff00;
+  color: black;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #d1df12;
+}
+
+.vs-element {
+  text-align: center;
+}
+
+/* Responsive */
+@media (min-width: 600px) and (max-width: 1024px) {
+  .match-planner {
+    padding: 1rem;
+    margin: 20px auto;
+  }
+
+  .match-planner__filters {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    align-items: end;
+    text-align: center;
+    margin: 40px auto;
+  }
+
+  .match-planner__filters h3 {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+
+  .filter-actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 599px) {
+  .match-cards__container {
+    grid-template-columns: repeat(auto-fill, minmax(80vw, 1fr));
+  }
+
+  .match-planner__filters {
+    margin: 60px 20px;
+  }
+
+  .match-planner {
+    padding: 0.75rem;
+    margin: 0.5rem 20px;
+  }
+
+  .filter-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .filter-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .filter-button {
+    width: 100%;
+  }
+}
+
+
+/* color de playotmic #0e2433 guardar para futuro*/
