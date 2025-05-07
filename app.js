@@ -4,6 +4,7 @@ const userRoutes = require('./src/routes/userRoutes');
 const matchRoutes = require('./src/routes/matchRoutes');
 const messageRoutes = require('./src/routes/messageRoutes');
 const fileRoutes = require('./src/routes/fileRoutes');
+const newsRoutes = require('./src/routes/newsRoutes');
 
 const app = express();
 
@@ -68,6 +69,9 @@ app.use('/api/messages', messageRoutes);
 
 console.log('Registering file routes...');
 app.use('/api/files', fileRoutes);
+
+console.log('Registering news routes...');
+app.use('/api/news', newsRoutes);
 
 // Middleware para registrar solicitudes
 app.use((req, res, next) => {
