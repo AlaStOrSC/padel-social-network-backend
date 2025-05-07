@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const userRoutes = require('./routes/userRoutes');
 const matchRoutes = require('./routes/matchRoutes');
@@ -7,33 +8,23 @@ const fileRoutes = require('./routes/fileRoutes');
 
 const app = express();
 
-// Middleware para manejar CORS manualmente
-app.use((req, res, next) => {
-  console.log('Incoming request:', req.method, req.url);
-  console.log('Request Origin:', req.headers.origin);
+// Configuración de CORS
+const corsOptions = {
+  origin: ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://padel-social-frontend.onrender.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+};
 
-  const allowedOrigins = ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://padel-social-frontend.onrender.com'];
-  const origin = req.headers.origin;
+// Habilitar CORS para todas las rutas
+app.use(cors(corsOptions));
 
-  if (!origin || allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin || 'https://padel-social-frontend.onrender.com');
-    console.log('Origin allowed, setting Access-Control-Allow-Origin to:', origin || 'https://padel-social-frontend.onrender.com');
-  } else {
-    console.log('Origin not allowed:', origin);
-    return res.status(403).json({ message: 'CORS policy: Origin not allowed' });
-  }
-
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-
-  if (req.method === 'OPTIONS') {
-    console.log('Handling OPTIONS request for:', req.url);
-    return res.status(200).end();
-  }
-
-  next();
-});
+// Manejar solicitudes preflight (OPTIONS) para rutas específicas
+app.options('/api/users', cors(corsOptions));
+app.options('/api/matches', cors(corsOptions));
+app.options('/api/messages', cors(corsOptions));
+app.options('/api/files', cors(corsOptions));
+app.options('/uploads', cors(corsOptions));
 
 app.use(express.json());
 
