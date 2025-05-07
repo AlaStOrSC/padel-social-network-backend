@@ -16,15 +16,41 @@ const corsOptions = {
   credentials: true,
 };
 
+// Habilitar CORS para todas las rutas
 app.use(cors(corsOptions));
+
+// Asegurarse de que las solicitudes preflight (OPTIONS) sean manejadas explícitamente
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    console.log('Handling OPTIONS request for:', req.url);
+    res.header('Access-Control-Allow-Origin', 'https://padel-social-frontend.onrender.com');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    return res.status(200).end();
+  }
+  next();
+});
 
 app.use(express.json());
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+app.use((req, res, next) => {
+  console.log(`Configuring route: ${req.method} ${req.path}`);
+  next();
+});
+
+console.log('Registering user routes...');
 app.use('/api/users', userRoutes);
+
+console.log('Registering match routes...');
 app.use('/api/matches', matchRoutes);
+
+console.log('Registering message routes...');
 app.use('/api/messages', messageRoutes);
+
+console.log('Registering file routes...');
 app.use('/api/files', fileRoutes);
 
 app.use((req, res, next) => {
