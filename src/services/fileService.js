@@ -41,7 +41,7 @@ const uploadProfilePicture = async (userId, file, protocol, host) => {
   }
 
   const filename = file.filename;
-  const url = `${protocol}://${host}/uploads/${filename}`;
+  const url = `https://${host}/uploads/${filename}`;
 
   if (user.profilePicture) {
     const oldFilename = user.profilePicture.split('/').pop();
@@ -55,7 +55,7 @@ const uploadProfilePicture = async (userId, file, protocol, host) => {
 };
 
 const deleteFile = async (filename) => {
-  const filePath = path.join(__dirname, '../../Uploads', filename);
+  const filePath = path.join(__dirname, '../../uploads', filename);
   console.log('Intentando eliminar archivo:', filePath);
   try {
     await fs.unlink(filePath);
