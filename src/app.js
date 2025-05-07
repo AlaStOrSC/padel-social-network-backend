@@ -9,20 +9,17 @@ const app = express();
 
 // Middleware para manejar CORS manualmente
 app.use((req, res, next) => {
-  // Definir los orígenes permitidos
-  const allowedOrigins = ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://padel-social-frontend.onrender.com'];
-  const origin = req.headers.origin;
+  console.log('Incoming request:', req.method, req.url);
+  console.log('Request Origin:', req.headers.origin);
 
-  // Verificar si el origen está permitido
-  if (allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
+  // Permitir todos los orígenes temporalmente para depurar
+  res.header('Access-Control-Allow-Origin', '*');
+  console.log('Setting Access-Control-Allow-Origin to: *');
 
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.header('Access-Control-Allow-Credentials', 'true');
 
-  // Manejar solicitudes preflight (OPTIONS)
   if (req.method === 'OPTIONS') {
     console.log('Handling OPTIONS request for:', req.url);
     return res.status(200).end();
