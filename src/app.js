@@ -8,61 +8,48 @@ const fileRoutes = require('./routes/fileRoutes');
 
 const app = express();
 
-// Configuración de CORS
-const corsOptions = {
-  origin: ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://padel-social-frontend.onrender.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-};
-
-// Habilitar CORS para todas las rutas
-app.use(cors(corsOptions));
-
-// Asegurarse de que las solicitudes preflight (OPTIONS) sean manejadas explícitamente
+// Configuración CORS más permisiva
 app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://padel-social-frontend.onrender.com');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  // Responder inmediatamente a las solicitudes OPTIONS
   if (req.method === 'OPTIONS') {
-    console.log('Handling OPTIONS request for:', req.url);
-    res.header('Access-Control-Allow-Origin', 'https://padel-social-frontend.onrender.com');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.header('Access-Control-Allow-Credentials', 'true');
     return res.status(200).end();
   }
+  
   next();
 });
+
+// Aplicar el middleware cors después de nuestro middleware personalizado
+app.use(cors());
 
 app.use(express.json());
 
-// Servir archivos de uploads
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-// Middleware para registrar todas las rutas que se están intentando configurar
-app.use((req, res, next) => {
-  console.log(`Configuring route: ${req.method} ${req.path}`);
+// Aplicar los mismos encabezados CORS a todas las rutas específicas
+const applyCors = (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://padel-social-frontend.onrender.com');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
   next();
-});
+};
 
-// Rutas API
-console.log('Registering user routes...');
-app.use('/api/users', userRoutes);
+// Aplicar CORS a cada grupo de rutas
+app.use('/api/users', applyCors, userRoutes);
+app.use('/api/matches', applyCors, matchRoutes);
+app.use('/api/messages', applyCors, messageRoutes);
+app.use('/api/files', applyCors, fileRoutes);
 
-console.log('Registering match routes...');
-app.use('/api/matches', matchRoutes);
-
-console.log('Registering message routes...');
-app.use('/api/messages', messageRoutes);
-
-console.log('Registering file routes...');
-app.use('/api/files', fileRoutes);
-
-// Middleware para registrar solicitudes
 app.use((req, res, next) => {
   console.log(`Solicitud recibida: ${req.method} ${req.url}`);
   next();
 });
 
-// Manejar rutas no encontradas
 app.use((req, res, next) => {
   res.status(404).json({ message: 'Ruta no encontrada' });
 });
