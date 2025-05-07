@@ -8,6 +8,7 @@ const fileRoutes = require('./routes/fileRoutes');
 
 const app = express();
 
+// Configuración de CORS
 const corsOptions = {
   origin: ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://padel-social-frontend.onrender.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -16,8 +17,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-app.options('*', cors(corsOptions));
 
 app.use(express.json());
 
