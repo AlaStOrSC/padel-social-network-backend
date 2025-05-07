@@ -1,15 +1,22 @@
 const express = require('express');
 const path = require('path');
-const userRoutes = require('./src/routes/userRoutes');
-const matchRoutes = require('./src/routes/matchRoutes');
-const messageRoutes = require('./src/routes/messageRoutes');
-const fileRoutes = require('./src/routes/fileRoutes');
+const userRoutes = require('./routes/userRoutes');
+const matchRoutes = require('./routes/matchRoutes');
+const messageRoutes = require('./routes/messageRoutes');
+const fileRoutes = require('./routes/fileRoutes');
 
 const app = express();
 
+// Middleware para registrar todas las solicitudes entrantes
+app.use((req, res, next) => {
+  console.log(`Solicitud entrante: ${req.method} ${req.url}`);
+  console.log('Headers:', req.headers);
+  next();
+});
+
 // Middleware para manejar CORS manualmente
 app.use((req, res, next) => {
-  console.log('Incoming request:', req.method, req.url);
+  console.log('Procesando CORS...');
   console.log('Request Origin:', req.headers.origin);
 
   const allowedOrigins = ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://padel-social-frontend.onrender.com'];
@@ -37,8 +44,11 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-// Servir archivos de uploads
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Servir archivos de uploads desde la nueva ruta
+const UPLOADS_BASE_PATH = process.env.NODE_ENV === 'production'
+  ? '/opt/render/project/uploads'
+  : path.join(__dirname, 'uploads');
+app.use('/uploads', express.static(UPLOADS_BASE_PATH));
 
 // Middleware para registrar todas las rutas que se están intentando configurar
 app.use((req, res, next) => {
@@ -67,7 +77,14 @@ app.use((req, res, next) => {
 
 // Manejar rutas no encontradas
 app.use((req, res, next) => {
+  console.log('Ruta no encontrada:', req.method, req.url);
   res.status(404).json({ message: 'Ruta no encontrada' });
+});
+
+// Middleware para manejar errores no capturados
+app.use((err, req, res, next) => {
+  console.error('Error no manejado:', err);
+  res.status(500).json({ error: 'Error interno del servidor', message: err.message });
 });
 
 module.exports = app;
