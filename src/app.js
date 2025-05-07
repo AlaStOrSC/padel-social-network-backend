@@ -12,9 +12,16 @@ app.use((req, res, next) => {
   console.log('Incoming request:', req.method, req.url);
   console.log('Request Origin:', req.headers.origin);
 
-  // Permitir todos los orígenes temporalmente para depurar
-  res.header('Access-Control-Allow-Origin', '*');
-  console.log('Setting Access-Control-Allow-Origin to: *');
+  const allowedOrigins = ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://padel-social-frontend.onrender.com'];
+  const origin = req.headers.origin;
+
+  if (!origin || allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin || 'https://padel-social-frontend.onrender.com');
+    console.log('Origin allowed, setting Access-Control-Allow-Origin to:', origin || 'https://padel-social-frontend.onrender.com');
+  } else {
+    console.log('Origin not allowed:', origin);
+    return res.status(403).json({ message: 'CORS policy: Origin not allowed' });
+  }
 
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
