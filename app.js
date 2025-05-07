@@ -1,9 +1,9 @@
 const express = require('express');
 const path = require('path');
-const userRoutes = require('./routes/userRoutes');
-const matchRoutes = require('./routes/matchRoutes');
-const messageRoutes = require('./routes/messageRoutes');
-const fileRoutes = require('./routes/fileRoutes');
+const userRoutes = require('./src/routes/userRoutes');
+const matchRoutes = require('./src/routes/matchRoutes');
+const messageRoutes = require('./src/routes/messageRoutes');
+const fileRoutes = require('./src/routes/fileRoutes');
 
 const app = express();
 
