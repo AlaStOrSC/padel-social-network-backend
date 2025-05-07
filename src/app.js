@@ -7,12 +7,10 @@ const fileRoutes = require('./routes/fileRoutes');
 
 const app = express();
 
-app.set('trust proxy', true);
-
+// Middleware para manejar CORS manualmente
 app.use((req, res, next) => {
   console.log('Incoming request:', req.method, req.url);
   console.log('Request Origin:', req.headers.origin);
-  console.log('Protocol (after trust proxy):', req.protocol);
 
   const allowedOrigins = ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://padel-social-frontend.onrender.com'];
   const origin = req.headers.origin;
@@ -39,13 +37,16 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+// Servir archivos de uploads
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+// Middleware para registrar todas las rutas que se están intentando configurar
 app.use((req, res, next) => {
   console.log(`Configuring route: ${req.method} ${req.path}`);
   next();
 });
 
+// Rutas API
 console.log('Registering user routes...');
 app.use('/api/users', userRoutes);
 
@@ -58,11 +59,13 @@ app.use('/api/messages', messageRoutes);
 console.log('Registering file routes...');
 app.use('/api/files', fileRoutes);
 
+// Middleware para registrar solicitudes
 app.use((req, res, next) => {
   console.log(`Solicitud recibida: ${req.method} ${req.url}`);
   next();
 });
 
+// Manejar rutas no encontradas
 app.use((req, res, next) => {
   res.status(404).json({ message: 'Ruta no encontrada' });
 });
