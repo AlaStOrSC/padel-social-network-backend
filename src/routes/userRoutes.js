@@ -11,12 +11,14 @@ const {
     removeFriend,
     getFriends,
     getPendingRequests,
+    logout,
   } = require('../controllers/userController');
   const authMiddleware = require('../middlewares/authMiddleware');
 
 router.post('/register', register);
 
 router.post('/login', login);
+router.post('/logout', authMiddleware(), logout);
 
 router.get('/', authMiddleware(), getUsers);
 

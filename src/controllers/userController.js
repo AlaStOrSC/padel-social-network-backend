@@ -17,11 +17,12 @@ const login = async (req, res) => {
     const token = await userService.login(req.body);
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'Lax', 
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
       maxAge: 3600000,
       path: '/',
     });
+
     res.status(200).json({ message: 'Inicio de sesión exitoso', token });
     
   } catch (error) {
@@ -119,6 +120,16 @@ const getPendingRequests = async (req, res) => {
   }
 };
 
+const logout = (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+    path: '/',
+  });
+  res.status(200).json({ message: 'Cierre de sesión exitoso' });
+};
+
 module.exports = {
   register,
   login,
@@ -130,4 +141,5 @@ module.exports = {
   removeFriend,
   getFriends,
   getPendingRequests,
+  logout,
 };

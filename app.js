@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 const userRoutes = require('./src/routes/userRoutes');
 const matchRoutes = require('./src/routes/matchRoutes');
 const messageRoutes = require('./src/routes/messageRoutes');
@@ -8,14 +9,12 @@ const newsRoutes = require('./src/routes/newsRoutes');
 
 const app = express();
 
-// Middleware para registrar todas las solicitudes entrantes
 app.use((req, res, next) => {
   console.log(`Solicitud entrante: ${req.method} ${req.url}`);
   console.log('Headers:', req.headers);
   next();
 });
 
-// Middleware para manejar CORS manualmente
 app.use((req, res, next) => {
   console.log('Procesando CORS...');
   console.log('Request Origin:', req.headers.origin);
@@ -43,21 +42,20 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(cookieParser());
+
 app.use(express.json());
 
-// Servir archivos de uploads desde la nueva ruta
 const UPLOADS_BASE_PATH = process.env.NODE_ENV === 'production'
   ? '/opt/render/project/uploads'
-  : path.join(__dirname, 'uploads');
+  : path.join(__dirname, 'Uploads');
 app.use('/uploads', express.static(UPLOADS_BASE_PATH));
 
-// Middleware para registrar todas las rutas que se están intentando configurar
 app.use((req, res, next) => {
   console.log(`Configuring route: ${req.method} ${req.path}`);
   next();
 });
 
-// Rutas API
 console.log('Registering user routes...');
 app.use('/api/users', userRoutes);
 
@@ -73,19 +71,16 @@ app.use('/api/files', fileRoutes);
 console.log('Registering news routes...');
 app.use('/api/news', newsRoutes);
 
-// Middleware para registrar solicitudes
 app.use((req, res, next) => {
   console.log(`Solicitud recibida: ${req.method} ${req.url}`);
   next();
 });
 
-// Manejar rutas no encontradas
 app.use((req, res, next) => {
   console.log('Ruta no encontrada:', req.method, req.url);
   res.status(404).json({ message: 'Ruta no encontrada' });
 });
 
-// Middleware para manejar errores no capturados
 app.use((err, req, res, next) => {
   console.error('Error no manejado:', err);
   res.status(500).json({ error: 'Error interno del servidor', message: err.message });
