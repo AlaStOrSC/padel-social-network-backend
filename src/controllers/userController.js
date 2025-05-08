@@ -15,7 +15,15 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const token = await userService.login(req.body);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'Lax', 
+      maxAge: 3600000,
+      path: '/',
+    });
     res.status(200).json({ message: 'Inicio de sesión exitoso', token });
+    
   } catch (error) {
     res.status(error.message.includes('incorrectos') ? 401 : 500).json({
       message: 'Error al iniciar sesión',
