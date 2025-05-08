@@ -1,30 +1,62 @@
 const WebSocket = require('ws');
 const jwt = require('jsonwebtoken');
 const Message = require('../models/Message');
-const {jwtSecret} = require('../config/index')
+const { jwtSecret } = require('../config/index');
 
 const clients = new Map();
 
 const initializeWebSocket = (server) => {
   const wss = new WebSocket.Server({ server });
 
-  wss.on('connection', (ws) => {
+  wss.on('connection', (ws, req) => {
+    let token = null;
+    const cookies = req.headers.cookie;
+
+    if (cookies) {
+      const cookieObj = cookies.split(';').reduce((acc, cookie) => {
+        const [name, value] = cookie.trim().split('=');
+        acc[name] = value;
+        return acc;
+      }, {});
+      token = cookieObj.token;
+    }
+
+    if (!token) {
+      console.error('No se proporcionó un token de autenticación');
+      ws.send(JSON.stringify({
+        type: 'error',
+        message: 'No se proporcionó un token de autenticación',
+      }));
+      ws.close();
+      return;
+    }
+
+    try {
+      const decoded = jwt.verify(token, jwtSecret);
+      const userId = decoded.userId;
+
+      ws.userId = userId;
+      clients.set(userId, ws);
+
+      ws.send(JSON.stringify({
+        type: 'auth_success',
+        message: 'Conexión autenticada',
+      }));
+    } catch (error) {
+      console.error('Error verificando token:', error);
+      ws.send(JSON.stringify({
+        type: 'error',
+        message: 'Token inválido o expirado',
+      }));
+      ws.close();
+      return;
+    }
 
     ws.on('message', async (message) => {
       try {
         const data = JSON.parse(message.toString());
 
-        if (data.type === 'auth') {
-          const token = data.token;
-          const decoded = jwt.verify(token, jwtSecret);
-          const userId = decoded.userId;
-
-          clients.set(userId, ws);
-          ws.userId = userId; 
-
-          ws.send(JSON.stringify({ type: 'auth_success', message: 'Conexión autenticada' }));
-        }
-        else if (data.type === 'message') {
+        if (data.type === 'message') {
           const { receiverId, content } = data;
           const senderId = ws.userId;
 
@@ -46,8 +78,7 @@ const initializeWebSocket = (server) => {
               timestamp: newMessage.timestamp,
             }));
           }
-        }
-        else if (data.type === 'markAsRead') {
+        } else if (data.type === 'markAsRead') {
           const { userId } = data;
           const receiverId = ws.userId;
 
@@ -63,19 +94,25 @@ const initializeWebSocket = (server) => {
               userId: receiverId,
             }));
           }
+        } else {
+          ws.send(JSON.stringify({
+            type: 'error',
+            message: 'Tipo de mensaje no soportado',
+          }));
         }
       } catch (error) {
         console.error('Error procesando mensaje:', error);
-        ws.send(JSON.stringify({ type: 'error', message: 'Error procesando mensaje' }));
+        ws.send(JSON.stringify({
+          type: 'error',
+          message: 'Error procesando mensaje',
+        }));
       }
     });
 
     ws.on('close', () => {
-      for (const [userId, socket] of clients.entries()) {
-        if (socket === ws) {
-          clients.delete(userId);
-          break;
-        }
+      if (ws.userId) {
+        clients.delete(ws.userId);
+        console.log(`Cliente desconectado: ${ws.userId}`);
       }
     });
 

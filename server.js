@@ -15,7 +15,8 @@ const startServer = async () => {
   try {
     await connectDB();
     server.listen(port, () => {
-      console.log(`Servidor corriendo en el puerto ${port}`);
+      console.log(`Servidor HTTP corriendo en el puerto ${port}`);
+      console.log(`WebSocket listo en wss://padel-social-network-backend.onrender.com`);
     });
   } catch (error) {
     console.error('Error iniciando el servidor:', error);
