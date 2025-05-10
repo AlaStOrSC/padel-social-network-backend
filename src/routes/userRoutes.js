@@ -12,6 +12,7 @@ const {
     getFriends,
     getPendingRequests,
     logout,
+    getPendingRequestsCount,
   } = require('../controllers/userController');
   const authMiddleware = require('../middlewares/authMiddleware');
 
@@ -30,5 +31,6 @@ router.put('/friends/reject/:requesterId', authMiddleware(), rejectFriendRequest
 router.delete('/friends/:friendId', authMiddleware(), removeFriend); 
 router.get('/friends', authMiddleware(), getFriends); 
 router.get('/friends/requests', authMiddleware(), getPendingRequests);
+router.get('/friends/requests/count', authMiddleware(), getPendingRequestsCount);
 
 module.exports = router;

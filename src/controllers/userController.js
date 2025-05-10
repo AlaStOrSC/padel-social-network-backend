@@ -1,4 +1,5 @@
 const userService = require('../services/userService');
+const Friendship = require('../models/Friendship');
 
 const register = async (req, res) => {
   try {
@@ -130,6 +131,22 @@ const logout = (req, res) => {
   res.status(200).json({ message: 'Cierre de sesión exitoso' });
 };
 
+const getPendingRequestsCount = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    const pendingCount = await Friendship.countDocuments({
+      recipient: userId,
+      status: 'pending',
+    });
+
+    res.status(200).json({ pendingCount });
+  } catch (error) {
+    console.error('Error al obtener el conteo de solicitudes pendientes:', error);
+    res.status(500).json({ message: 'Error al obtener el conteo de solicitudes pendientes', error: error.message });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -142,4 +159,5 @@ module.exports = {
   getFriends,
   getPendingRequests,
   logout,
+  getPendingRequestsCount,
 };
