@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const cors = require('cors'); // Importa la librería cors
+const cors = require('cors');
 const userRoutes = require('./src/routes/userRoutes');
 const matchRoutes = require('./src/routes/matchRoutes');
 const messageRoutes = require('./src/routes/messageRoutes');
@@ -12,7 +12,6 @@ const notFoundHandler = require('./src/middlewares/notFoundHandler');
 
 const app = express();
 
-// Configura CORS
 const allowedOrigins = [
   'http://localhost:5500',
   'http://127.0.0.1:5500',
@@ -40,7 +39,6 @@ const UPLOADS_BASE_PATH = process.env.NODE_ENV === 'production'
   : path.join(__dirname, 'Uploads');
 app.use('/uploads', express.static(UPLOADS_BASE_PATH));
 
-// Rutas
 app.use('/api/users', userRoutes);
 app.use('/api/matches', matchRoutes);
 app.use('/api/messages', messageRoutes);
