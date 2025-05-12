@@ -6,6 +6,9 @@ const matchRoutes = require('./src/routes/matchRoutes');
 const messageRoutes = require('./src/routes/messageRoutes');
 const fileRoutes = require('./src/routes/fileRoutes');
 const newsRoutes = require('./src/routes/newsRoutes');
+const errorHandler = require('./src/middlewares/errorMiddleware');
+const notFoundHandler = require('./src/middlewares/notFoundHandler');
+
 
 const app = express();
 
@@ -76,15 +79,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  console.log('Ruta no encontrada:', req.method, req.url);
-  res.status(404).json({ message: 'Ruta no encontrada' });
-});
+app.use('/api', notFoundHandler);
 
-app.use((err, req, res, next) => {
-  console.error('Error no manejado:', err);
-  res.status(500).json({ error: 'Error interno del servidor', message: err.message });
-});
+app.use(errorHandler);
 
 module.exports = app;
 
