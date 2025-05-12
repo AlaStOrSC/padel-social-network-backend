@@ -157,6 +157,5 @@ module.exports = {
   validateResult,
   createMatchValidations,
   updateMatchValidations,
-  matchIdValidations,
   saveMatchValidations,
 };
