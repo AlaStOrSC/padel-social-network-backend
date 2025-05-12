@@ -10,10 +10,10 @@ const {
 } = require('../validations/matchValidations');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-router.post('/', authMiddleware, createMatchValidations, validateResult, createMatch);
-router.get('/', authMiddleware, getMatches);
-router.delete('/:id', authMiddleware, matchIdValidations, validateResult, deleteMatch);
-router.put('/:id', authMiddleware('admin'), updateMatchValidations, validateResult, updateMatch);
-router.put('/savematches/:id', authMiddleware, saveMatchValidations, validateResult, saveMatch);
+router.post('/', authMiddleware(), createMatchValidations, validateResult, createMatch);
+router.get('/', authMiddleware(), getMatches);
+router.delete('/:id', authMiddleware(), matchIdValidations, validateResult, deleteMatch);
+router.put('/:id', authMiddleware()('admin'), updateMatchValidations, validateResult, updateMatch);
+router.put('/savematches/:id', authMiddleware(), saveMatchValidations, validateResult, saveMatch);
 
 module.exports = router;

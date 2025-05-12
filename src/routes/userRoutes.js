@@ -26,41 +26,41 @@ const authMiddleware = require('../middlewares/authMiddleware');
 
 router.post('/register', registerValidations, validateResult, register);
 router.post('/login', loginValidations, validateResult, login);
-router.post('/logout', authMiddleware, logout);
+router.post('/logout', authMiddleware(), logout);
 
-router.get('/', authMiddleware, getUsers);
-router.get('/profile', authMiddleware, getUserProfile);
+router.get('/', authMiddleware(), getUsers);
+router.get('/profile', authMiddleware(), getUserProfile);
 
 router.post(
   '/friends/request/:recipientId',
-  authMiddleware,
+  authMiddleware(),
   sendFriendRequestValidations,
   validateResult,
   sendFriendRequest
 );
 router.put(
   '/friends/accept/:requesterId',
-  authMiddleware,
+  authMiddleware(),
   friendActionValidations,
   validateResult,
   acceptFriendRequest
 );
 router.put(
   '/friends/reject/:requesterId',
-  authMiddleware,
+  authMiddleware(),
   friendActionValidations,
   validateResult,
   rejectFriendRequest
 );
 router.delete(
   '/friends/:friendId',
-  authMiddleware,
+  authMiddleware(),
   removeFriendValidations,
   validateResult,
   removeFriend
 );
-router.get('/friends', authMiddleware, getFriends);
-router.get('/friends/requests', authMiddleware, getPendingRequests);
-router.get('/friends/requests/count', authMiddleware, getPendingRequestsCount);
+router.get('/friends', authMiddleware(), getFriends);
+router.get('/friends/requests', authMiddleware(), getPendingRequests);
+router.get('/friends/requests/count', authMiddleware(), getPendingRequestsCount);
 
 module.exports = router;
