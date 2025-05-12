@@ -27,39 +27,6 @@ const createMatchValidations = [
     .notEmpty().withMessage('La ciudad es obligatoria')
     .isString().withMessage('La ciudad debe ser una cadena')
     .trim(),
-  body('weather')
-    .optional()
-    .isString().withMessage('El clima debe ser una cadena')
-    .trim(),
-  body('results.set1.left')
-    .optional()
-    .isInt({ min: 0 }).withMessage('El resultado del set 1 (izquierda) debe ser un número entero mayor o igual a 0'),
-  body('results.set1.right')
-    .optional()
-    .isInt({ min: 0 }).withMessage('El resultado del set 1 (derecha) debe ser un número entero mayor o igual a 0'),
-  body('results.set2.left')
-    .optional()
-    .isInt({ min: 0 }).withMessage('El resultado del set 2 (izquierda) debe ser un número entero mayor o igual a 0'),
-  body('results.set2.right')
-    .optional()
-    .isInt({ min: 0 }).withMessage('El resultado del set 2 (derecha) debe ser un número entero mayor o igual a 0'),
-  body('results.set3.left')
-    .optional()
-    .isInt({ min: 0 }).withMessage('El resultado del set 3 (izquierda) debe ser un número entero mayor o igual a 0'),
-  body('results.set3.right')
-    .optional()
-    .isInt({ min: 0 }).withMessage('El resultado del set 3 (derecha) debe ser un número entero mayor o igual a 0'),
-  body('rivalStyle')
-    .optional()
-    .isString().withMessage('El estilo del rival debe ser una cadena')
-    .trim(),
-  body('comments')
-    .optional()
-    .isString().withMessage('Los comentarios deben ser una cadena')
-    .trim(),
-  body('result')
-    .optional()
-    .isIn(['won', 'lost', 'draw', 'pending']).withMessage('El resultado debe ser "won", "lost", "draw" o "pending"'),
 ];
 
 const updateMatchValidations = [
